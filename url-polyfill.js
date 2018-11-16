@@ -76,7 +76,7 @@
             }
           }
         }
-      } else {
+      } else if(typeof searchString !== 'undefined') {
         throw new TypeError('Unsupported input\'s type for URLSearchParams');
       }
     };
@@ -206,10 +206,12 @@
         if (this._entries) {
           this._entries = {};
         } else {
-          var _this = this;
-          this.searchParams.forEach(function(value, name) {
-            _this.delete(name);
-          });
+          var it = this.keys();
+          var entry = it.next();
+          while (!entry.done) {
+            entry = it.next();
+            this.delete(entry.value);
+          }
         }
 
         searchString = searchString.replace(/^\?/, '');
